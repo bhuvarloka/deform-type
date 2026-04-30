@@ -97,9 +97,10 @@
   @apply fixed top-6 right-6 w-6 h-6 z-2000 bg-transparent border-none cursor-pointer flex items-center justify-center opacity-5 hover:opacity-100 transition-opacity duration-300;
 }
 
-#settings-trigger {
-  filter: invert(1);
+.panel-trigger.is-open {
+  @apply opacity-100;
 }
+
 #settings-trigger.is-open {
   filter: none;
 }
