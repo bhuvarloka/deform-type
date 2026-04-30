@@ -9,39 +9,26 @@
   <body>
     <main></main>
 
-    <!-- Settings Panel -->
-    <aside
-      id="settings-panel"
-      class="fixed top-0 right-0 h-screen w-96 translate-x-full z-1000 overflow-y-auto transition-transform duration-300 ease-in-out p-2"
-    >
-      <div
-        class="bg-white border-2 border-black rounded-xl flex flex-col gap-8 pt-4 pb-6 px-6 h-full w-full"
-      >
-        <h2 class="text-lg tracking-wider">Settings</h2>
+    <aside id="settings-panel" class="panel translate-x-full">
+      <div class="panel-card">
+        <h2 class="panel-title">Settings</h2>
 
         <!-- Message -->
         <div class="panel-section">
-          <h3 class="section-heading">
-            Message
-          </h3>
+          <h3 class="section-heading">Message</h3>
           <textarea
             id="message-input"
             rows="2"
             placeholder="Enter your message…"
-            class="w-full text-sm border border-black/30 rounded-lg px-3 py-2 bg-white focus:outline-none focus:border-black/50 transition-colors resize-none font-[inherit]"
+            class="panel-textarea"
           ></textarea>
           <p class="hint">Press Enter to apply.</p>
         </div>
 
-        <!-- Font Upload -->
+        <!-- Typography -->
         <div class="panel-section">
-          <h3 class="section-heading">
-            Font
-          </h3>
-          <label
-            id="font-drop-zone"
-            class="flex items-center justify-center w-full h-16 border border-dashed border-black/30 rounded-lg cursor-pointer text-sm text-black/75 hover:border-black/50 hover:text-black/50 transition-colors"
-          >
+          <h3 class="section-heading">Typography</h3>
+          <label id="font-drop-zone" class="drop-zone">
             <span id="font-drop-label">Drop or click to upload</span>
             <input
               type="file"
@@ -50,16 +37,10 @@
               class="sr-only"
             />
           </label>
-          <p class="hint">Accepts .TTF or .OTF</p>
-        </div>
-
-        <!-- Font Size -->
-        <div class="panel-section">
-          <h3 class="section-heading">
-            Font Size
-          </h3>
-          <label class="flex items-center justify-between gap-3">
-            <span class="text-base">72 – 640</span>
+          <label class="panel-row">
+            <span class="panel-row-label"
+              >Size <span class="panel-row-sublabel">72 – 640</span></span
+            >
             <input
               id="font-size-input"
               type="number"
@@ -69,15 +50,10 @@
               class="number-input"
             />
           </label>
-        </div>
-
-        <!-- Columns -->
-        <div class="panel-section">
-          <h3 class="section-heading">
-            Columns
-          </h3>
-          <label class="flex items-center justify-between gap-3">
-            <span class="text-base">2 – 6</span>
+          <label class="panel-row">
+            <span class="panel-row-label"
+              >Columns <span class="panel-row-sublabel">2 – 6</span></span
+            >
             <input
               id="cols-input"
               type="number"
@@ -89,66 +65,90 @@
           </label>
         </div>
 
-        <!-- Colors -->
-        <div class="flex flex-col gap-3">
-          <h3 class="section-heading">
-            Colors
-          </h3>
+        <!-- Animation -->
+        <div class="panel-section">
+          <h3 class="section-heading">Animation</h3>
+          <label class="panel-row">
+            <span class="panel-row-label">Noise</span>
+            <span class="toggle">
+              <input type="checkbox" id="noise-toggle-input" class="sr-only" />
+              <span class="toggle-track"
+                ><span class="toggle-thumb"></span
+              ></span>
+            </span>
+          </label>
+          <label class="panel-row">
+            <span class="panel-row-label"
+              >Speed <span class="panel-row-sublabel">1 – 24</span></span
+            >
+            <input
+              id="noise-speed-input"
+              type="number"
+              min="1"
+              max="24"
+              step="1"
+              value="8"
+              class="number-input"
+            />
+          </label>
+          <label class="panel-row">
+            <span class="panel-row-label"
+              >Amount <span class="panel-row-sublabel">48 – 480</span></span
+            >
+            <input
+              id="noise-amount-input"
+              type="number"
+              min="48"
+              max="480"
+              step="8"
+              value="240"
+              class="number-input"
+            />
+          </label>
+        </div>
 
-          <div class="panel-section">
-            <div class="flex gap-2">
-              <label
-                class="color-swatch"
-              >
-                <input
-                  type="color"
-                  id="bg-color-input"
-                  value="#2b2b2b"
-                  class="sr-only"
-                />
-                <span
-                  id="bg-color-swatch"
-                  class="block w-full h-full"
-                  style="background: #2b2b2b"
-                ></span>
-              </label>
-              <label
-                class="color-swatch"
-              >
-                <input
-                  type="color"
-                  id="font-color-input"
-                  value="#b4b4b4"
-                  class="sr-only"
-                />
-                <span
-                  id="font-color-swatch"
-                  class="block w-full h-full"
-                  style="background: #b4b4b4"
-                ></span>
-              </label>
-            </div>
-            <p class="hint">Background and Type</p>
+        <!-- Colors -->
+        <div class="panel-section">
+          <h3 class="section-heading">Colors</h3>
+          <div class="swatch-row">
+            <label class="color-swatch">
+              <input
+                type="color"
+                id="bg-color-input"
+                value="#2b2b2b"
+                class="sr-only"
+              />
+              <span
+                id="bg-color-swatch"
+                class="swatch-fill"
+                style="background: #2b2b2b"
+              ></span>
+            </label>
+            <label class="color-swatch">
+              <input
+                type="color"
+                id="font-color-input"
+                value="#b4b4b4"
+                class="sr-only"
+              />
+              <span
+                id="font-color-swatch"
+                class="swatch-fill"
+                style="background: #b4b4b4"
+              ></span>
+            </label>
           </div>
+          <p class="hint">Background and Type</p>
         </div>
 
         <!-- Reset -->
-        <div class="mt-auto">
-          <button
-            id="reset-btn"
-            class="w-full text-sm font-bold tracking-wider uppercase py-3 px-4 border border-black/30 rounded-lg hover:bg-black hover:text-white transition-colors duration-200 cursor-pointer"
-          >
-            Reset
-          </button>
+        <div class="panel-footer">
+          <button id="reset-btn" class="panel-reset-btn">Reset</button>
         </div>
       </div>
     </aside>
 
-    <!-- Gear trigger -->
-    <button
-      id="settings-trigger"
-      class="fixed top-6 right-6 w-6 h-6 z-2000 bg-transparent border-none cursor-pointer flex items-center justify-center opacity-5 hover:opacity-100 [body.panel-open_&]:opacity-100 transition-opacity duration-300"
-    >
+    <button id="settings-trigger" class="panel-trigger">
       <img alt="Settings" class="w-full h-full object-contain" />
     </button>
 

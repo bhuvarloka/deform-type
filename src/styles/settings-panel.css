@@ -1,8 +1,13 @@
-#settings-trigger {
-  filter: invert(1);
+.panel {
+  @apply fixed top-0 right-0 h-screen w-96 z-1000 overflow-y-auto transition-transform duration-300 ease-in-out p-2;
 }
-#settings-trigger.is-open {
-  filter: none;
+
+.panel-card {
+  @apply bg-white border-2 border-black rounded-xl flex flex-col gap-8 pt-4 pb-6 px-6 h-full w-full;
+}
+
+.panel-title {
+  @apply text-lg tracking-wider;
 }
 
 .panel-section {
@@ -17,8 +22,52 @@
   @apply text-sm text-black/50 pl-0.5;
 }
 
+.panel-textarea {
+  @apply w-full text-sm border border-black/30 rounded-lg px-3 py-2 bg-white focus:outline-none focus:border-black/50 transition-colors resize-none font-[inherit];
+}
+
+.drop-zone {
+  @apply flex items-center justify-center w-full h-10 border border-dashed border-black/30 rounded-lg cursor-pointer text-sm text-black/75 hover:border-black/50 hover:text-black/50 transition-colors;
+}
+
+.panel-row {
+  @apply flex items-center justify-between gap-3;
+}
+
+.panel-row-label {
+  @apply text-base flex items-baseline gap-2;
+}
+
+.panel-row-sublabel {
+  @apply text-sm text-black/50;
+}
+
+.toggle {
+  @apply relative inline-flex items-center cursor-pointer select-none;
+}
+
+.toggle-track {
+  @apply relative block w-9 h-5 rounded-full bg-black/15 transition-colors duration-200;
+}
+
+.toggle-thumb {
+  @apply absolute top-0.5 left-0.5 w-4 h-4 rounded-full bg-white shadow-sm transition-all duration-200;
+}
+
+.toggle.is-on .toggle-track {
+  @apply bg-black;
+}
+
+.toggle.is-on .toggle-thumb {
+  @apply left-[1.125rem];
+}
+
 .number-input {
   @apply w-16 text-sm border border-black/30 rounded pl-2 pr-0.5 py-0.5 focus:outline-none focus:border-black/50;
+}
+
+.swatch-row {
+  @apply flex gap-2;
 }
 
 .color-swatch {
@@ -30,4 +79,27 @@
   height: 1px;
   opacity: 0;
   pointer-events: none;
+}
+
+.swatch-fill {
+  @apply block w-full h-full;
+}
+
+.panel-footer {
+  @apply mt-auto;
+}
+
+.panel-reset-btn {
+  @apply w-full text-sm font-bold tracking-wider uppercase py-3 px-4 border border-black/30 rounded-lg hover:bg-black hover:text-white transition-colors duration-200 cursor-pointer;
+}
+
+.panel-trigger {
+  @apply fixed top-6 right-6 w-6 h-6 z-2000 bg-transparent border-none cursor-pointer flex items-center justify-center opacity-5 hover:opacity-100 transition-opacity duration-300;
+}
+
+#settings-trigger {
+  filter: invert(1);
+}
+#settings-trigger.is-open {
+  filter: none;
 }

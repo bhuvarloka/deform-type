@@ -2,18 +2,51 @@
 
 ![Deform Type Screenshot](./readme-images/deform-type.png)
 
-A generative art project built with p5.js that allows you to interactively deform text on a grid by dragging handles.
+A generative art tool built with p5.js and Vite that lets you interactively deform text on a warped grid — or animate it with Perlin noise.
 
-## Description
+## Features
 
-This project creates a dynamic text display where letters are arranged in a grid. You can deform the text by dragging the circular handles at the intersections of the grid lines. The text can be customized through settings, and you can toggle between light and dark themes.
+- **Interactive deformation** — drag handles at grid intersections to warp the text mesh
+- **Noise animation** — enable Perlin noise to animate the grid automatically with configurable speed and amount
+- **Custom fonts** — drop any `.ttf` or `.otf` file to render your text in a custom typeface
+- **Full color control** — pick background and type colors independently via color swatches
+- **Snapshot export** — save a high-resolution PNG of the current state at 2× pixel density
 
-## Usage
+## Getting started
 
-- **Drag handles**: Click and drag the pulsing circular handles to deform the text grid.
-- **Toggle theme**: Press `H` to switch between light and dark themes.
-- **Save snapshot**: Press `S` to save a high-resolution PNG image of the current deformation.
+```bash
+pnpm install
+pnpm dev
+```
 
-## Customization
+Open `http://localhost:5173` in your browser.
 
-You can modify the text, font size, number of columns, and font family through the settings panel (if available in your setup).
+## Controls
+
+| Action | How |
+| --- | --- |
+| Deform text | Click and drag the pulsing handles at grid intersections |
+| Open settings | Click the settings button (bottom-right corner) |
+| Save snapshot | Press `S` |
+
+> Handles are only visible and draggable when **Noise** is disabled.
+
+## Settings panel
+
+| Setting | Description | Range / Default |
+| --- | --- | --- |
+| **Message** | Text to display (spaces ignored) | `DEFORM TYPE` |
+| **Font** | Upload a `.ttf` / `.otf` file | Built-in display font |
+| **Size** | Font size in pixels | 72 – 640 / `320` |
+| **Columns** | Number of columns in the grid | 2 – 6 / `4` |
+| **Noise** | Toggle animated Perlin noise deformation | Off |
+| **Speed** | Noise animation speed | 1 – 24 / `8` |
+| **Amount** | Maximum noise displacement in pixels | 48 – 480 / `240` |
+| **Colors** | Background and type color swatches | `#2b2b2b` / `#b4b4b4` |
+| **Reset** | Restore all settings to defaults | — |
+
+## Tech stack
+
+- [p5.js](https://p5js.org/) — canvas rendering and Perlin noise
+- [Vite](https://vitejs.dev/) — bundler and dev server
+- [Tailwind CSS](https://tailwindcss.com/) — settings panel styling

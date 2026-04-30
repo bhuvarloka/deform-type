@@ -8,11 +8,17 @@ import {
   setFontFamily,
   setBgColor,
   setFontColor,
+  setNoiseEnabled,
+  setNoiseSpeed,
+  setNoiseAmount,
   getCurrentMessage,
   getCurrentFontSize,
   getCurrentCols,
   getCurrentBgColor,
   getCurrentFontColor,
+  getCurrentNoiseEnabled,
+  getCurrentNoiseSpeed,
+  getCurrentNoiseAmount,
 } from "./configs.js";
 
 // ── Panel toggle ─────────────────────────────────────────────────────────────
@@ -120,6 +126,26 @@ const fontColorSwatch = document.getElementById("font-color-swatch");
   });
 });
 
+// Noise animation
+const noiseToggleInput = document.getElementById("noise-toggle-input");
+const noiseSpeedInput = document.getElementById("noise-speed-input");
+const noiseAmountInput = document.getElementById("noise-amount-input");
+
+function syncNoiseToggle(isOn) {
+  noiseToggleInput.parentElement.classList.toggle("is-on", isOn);
+}
+
+noiseToggleInput.addEventListener("change", () => {
+  setNoiseEnabled(noiseToggleInput.checked);
+  syncNoiseToggle(noiseToggleInput.checked);
+});
+noiseSpeedInput.addEventListener("input", () => {
+  setNoiseSpeed(parseFloat(noiseSpeedInput.value) || DEFAULTS.noiseSpeed);
+});
+noiseAmountInput.addEventListener("input", () => {
+  setNoiseAmount(parseFloat(noiseAmountInput.value) || DEFAULTS.noiseAmount);
+});
+
 // Reset
 document.getElementById("reset-btn").addEventListener("click", () => {
   messageInput.value = DEFAULTS.message;
@@ -141,6 +167,16 @@ document.getElementById("reset-btn").addEventListener("click", () => {
 
   fontDropLabel.textContent = "Drop or click to upload";
   fontUploadInput.value = "";
+
+  noiseToggleInput.checked = DEFAULTS.noiseEnabled;
+  syncNoiseToggle(DEFAULTS.noiseEnabled);
+  setNoiseEnabled(DEFAULTS.noiseEnabled);
+
+  noiseSpeedInput.value = DEFAULTS.noiseSpeed;
+  setNoiseSpeed(DEFAULTS.noiseSpeed);
+
+  noiseAmountInput.value = DEFAULTS.noiseAmount;
+  setNoiseAmount(DEFAULTS.noiseAmount);
 });
 
 // ── Hydrate inputs from state on load ────────────────────────────────────────
@@ -154,3 +190,7 @@ colsInput.value = getCurrentCols();
   input.value = value;
   swatch.style.background = value;
 });
+noiseToggleInput.checked = getCurrentNoiseEnabled();
+syncNoiseToggle(getCurrentNoiseEnabled());
+noiseSpeedInput.value = getCurrentNoiseSpeed();
+noiseAmountInput.value = getCurrentNoiseAmount();
