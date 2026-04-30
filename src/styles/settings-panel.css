@@ -100,7 +100,3 @@
 .panel-trigger.is-open {
   @apply opacity-100;
 }
-
-#settings-trigger.is-open {
-  filter: none;
-}
