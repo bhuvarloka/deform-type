@@ -1,15 +1,15 @@
 {
   "dependencies": {
-    "@parcel/transformer-raw": "^2.12.0",
     "p5": "^1.9.2"
   },
   "devDependencies": {
-    "parcel": "^2.12.0"
+    "@tailwindcss/vite": "^4.2.4",
+    "tailwindcss": "^4.2.4",
+    "vite": "latest"
   },
   "scripts": {
-    "start": "parcel src/index.html --open",
-    "clean": "rm -rf dist/*",
-    "build:parcel": "parcel build src/index.html",
-    "build": "npm run clean && npm run build:parcel"
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
   }
 }

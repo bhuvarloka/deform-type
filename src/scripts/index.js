@@ -1,5 +1,5 @@
 import p5 from "p5";
-import typefaceUrl from "../assets/fonts/BlackSla.otf";
+import typefaceUrl from "../assets/fonts/BlackSla.otf?url";
 import {
   initSettings,
   setMessageChangeCallback,
