@@ -1,15 +1,19 @@
 import p5 from "p5";
 import typefaceUrl from "../assets/fonts/BlackSla.otf?url";
+import "./settings-panel.js";
 import {
-  initSettings,
-  setMessageChangeCallback,
-  setFontSizeChangeCallback,
-  setColsChangeCallback,
-  setFontChangeCallback,
+  setMessageCallback,
+  setFontSizeCallback,
+  setColsCallback,
+  setFontCallback,
+  setBgColorCallback,
+  setFontColorCallback,
   getCurrentMessage,
   getCurrentFontSize,
   getCurrentCols,
-} from "./settings.js";
+  getCurrentBgColor,
+  getCurrentFontColor,
+} from "./configs.js";
 import { saveSnapshot, pulse } from "./utils.js";
 
 new p5((sk) => {
@@ -27,8 +31,10 @@ new p5((sk) => {
   let rows = Math.ceil(letters.length / cols);
   let fontSize = getCurrentFontSize();
   let currentFontFamily = null;
-  let isLightTheme = false;
+  let bgColor = getCurrentBgColor();
+  let fontColor = getCurrentFontColor();
   const handleSize = 24;
+  let activeCursor = "default";
 
   const recreateTextures = () => {
     textures = [];
@@ -41,7 +47,7 @@ new p5((sk) => {
 
   const createTexture = (char) => {
     const graphics = sk.createGraphics(sk.width / cols, sk.height / rows);
-    graphics.fill(isLightTheme ? 0 : 180);
+    graphics.fill(fontColor);
     if (currentFontFamily) {
       graphics.textFont(currentFontFamily);
     } else {
@@ -74,35 +80,42 @@ new p5((sk) => {
   sk.setup = () => {
     sk.createCanvas(sk.windowWidth, sk.windowHeight, sk.WEBGL);
     defaultDensity = sk.displayDensity();
-    initSettings();
-    setMessageChangeCallback((newMessage) => {
+
+    setMessageCallback((newMessage) => {
       letters = newMessage.split("").filter((char) => char !== " ");
       rows = Math.ceil(letters.length / cols);
       recreateTextures();
       setupGrid();
     });
-    setFontSizeChangeCallback((newFontSize) => {
+    setFontSizeCallback((newFontSize) => {
       fontSize = newFontSize;
       recreateTextures();
     });
-    setColsChangeCallback((newCols) => {
+    setColsCallback((newCols) => {
       cols = newCols;
       rows = Math.ceil(letters.length / cols);
       recreateTextures();
       setupGrid();
     });
-    setFontChangeCallback((newFontFamily) => {
+    setFontCallback((newFontFamily) => {
       currentFontFamily = newFontFamily;
       recreateTextures();
     });
+    setBgColorCallback((newColor) => {
+      bgColor = newColor;
+    });
+    setFontColorCallback((newColor) => {
+      fontColor = newColor;
+      recreateTextures();
+    });
+
     recreateTextures();
     setupGrid();
   };
 
   sk.draw = () => {
-    sk.background(isLightTheme ? 255 : 36);
+    sk.background(bgColor);
 
-    // Draw textured quads
     sk.noStroke();
     let textureIndex = 0;
     for (let row = 0; row < rows; row++) {
@@ -128,7 +141,6 @@ new p5((sk) => {
       }
     }
 
-    // Draw handles
     sk.fill(0);
     const pulseValue = pulse(sk, 12, 18, 2);
     for (let col = 1; col < cols; col++) {
@@ -138,7 +150,6 @@ new p5((sk) => {
       }
     }
 
-    // Update hovered handle
     hoveredHandle = null;
     const mouseX = sk.mouseX - sk.width / 2;
     const mouseY = sk.mouseY - sk.height / 2;
@@ -153,28 +164,26 @@ new p5((sk) => {
       if (hoveredHandle) break;
     }
 
-    // Update cursor
-    if (draggedHandle) {
-      document.body.style.cursor = "grabbing";
-    } else if (hoveredHandle) {
-      document.body.style.cursor = "grab";
-    } else {
-      document.body.style.cursor = "default";
+    const nextCursor = draggedHandle ? "grabbing" : hoveredHandle ? "grab" : "default";
+    if (nextCursor !== activeCursor) {
+      activeCursor = nextCursor;
+      document.body.style.cursor = nextCursor;
     }
   };
 
   sk.mousePressed = () => {
     if (hoveredHandle) {
-      draggedHandle = { col: hoveredHandle.col, row: hoveredHandle.row };
+      const vertex = gridVertices[hoveredHandle.col][hoveredHandle.row];
+      const grabOffsetX = vertex.x - (sk.mouseX - sk.width / 2);
+      const grabOffsetY = vertex.y - (sk.mouseY - sk.height / 2);
+      draggedHandle = { col: hoveredHandle.col, row: hoveredHandle.row, grabOffsetX, grabOffsetY };
     }
   };
 
   sk.mouseDragged = () => {
     if (draggedHandle) {
-      const deltaX = sk.mouseX - sk.pmouseX;
-      const deltaY = sk.mouseY - sk.pmouseY;
-      gridVertices[draggedHandle.col][draggedHandle.row].x += deltaX;
-      gridVertices[draggedHandle.col][draggedHandle.row].y += deltaY;
+      gridVertices[draggedHandle.col][draggedHandle.row].x = (sk.mouseX - sk.width / 2) + draggedHandle.grabOffsetX;
+      gridVertices[draggedHandle.col][draggedHandle.row].y = (sk.mouseY - sk.height / 2) + draggedHandle.grabOffsetY;
     }
   };
 
@@ -188,10 +197,6 @@ new p5((sk) => {
   };
 
   sk.keyPressed = () => {
-    if (sk.key === "h" || sk.key === "H") {
-      isLightTheme = !isLightTheme;
-      recreateTextures();
-    }
     if (sk.key === "s" || sk.key === "S") {
       saveSnapshot(sk, defaultDensity, 2);
     }

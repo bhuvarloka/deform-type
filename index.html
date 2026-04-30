@@ -1,73 +1,155 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="stylesheet" href="./src/styles/style.css" />
-    <link rel="stylesheet" href="./src/styles/settings.css" />
     <title>Deform Type</title>
   </head>
   <body>
     <main></main>
 
     <!-- Settings Panel -->
-    <div id="settings-panel" class="side-panel">
-      <h2 class="panel-title">Settings</h2>
+    <aside
+      id="settings-panel"
+      class="fixed top-0 right-0 h-screen w-96 translate-x-full z-1000 overflow-y-auto transition-transform duration-300 ease-in-out p-2"
+    >
+      <div
+        class="bg-white border-2 border-black rounded-xl flex flex-col gap-8 pt-4 pb-6 px-6 h-full w-full"
+      >
+        <h2 class="text-lg tracking-wider">Settings</h2>
 
-      <div class="panel-section">
-        <h3 class="section-title">Edit Message</h3>
-        <textarea
-          id="message-input"
-          placeholder="Enter your message here..."
-          rows="4"
-          class="message-textarea"
-        ></textarea>
-        <p class="hint-text">
-          Each character will be displayed as a separate letter.
-        </p>
-      </div>
-
-      <div class="panel-section">
-        <h3 class="section-title">Font Upload</h3>
-        <div class="input-group">
-          <input type="file" id="font-upload-input" accept=".ttf,.otf" />
-          <p class="hint-text">Upload .TTF or .OTF font files</p>
+        <!-- Message -->
+        <div class="panel-section">
+          <h3 class="section-heading">
+            Message
+          </h3>
+          <textarea
+            id="message-input"
+            rows="2"
+            placeholder="Enter your message…"
+            class="w-full text-sm border border-black/30 rounded-lg px-3 py-2 bg-white focus:outline-none focus:border-black/50 transition-colors resize-none font-[inherit]"
+          ></textarea>
+          <p class="hint">Press Enter to apply.</p>
         </div>
-      </div>
 
-      <div class="panel-section">
-        <h3 class="section-title">Layout Settings</h3>
-        <div class="input-group">
-          <label for="font-size-input" class="layout-setting-label">
-            Font Size
+        <!-- Font Upload -->
+        <div class="panel-section">
+          <h3 class="section-heading">
+            Font
+          </h3>
+          <label
+            id="font-drop-zone"
+            class="flex items-center justify-center w-full h-16 border border-dashed border-black/30 rounded-lg cursor-pointer text-sm text-black/75 hover:border-black/50 hover:text-black/50 transition-colors"
+          >
+            <span id="font-drop-label">Drop or click to upload</span>
+            <input
+              type="file"
+              id="font-upload-input"
+              accept=".ttf,.otf"
+              class="sr-only"
+            />
           </label>
-          <input
-            type="number"
-            id="font-size-input"
-            min="72"
-            max="640"
-            value="320"
-            class="message-textarea layout-setting-input"
-          />
+          <p class="hint">Accepts .TTF or .OTF</p>
         </div>
 
-        <div class="input-group">
-          <label for="cols-input" class="layout-setting-label"> Columns </label>
-          <input
-            type="number"
-            id="cols-input"
-            min="2"
-            max="6"
-            value="4"
-            class="message-textarea"
-          />
+        <!-- Font Size -->
+        <div class="panel-section">
+          <h3 class="section-heading">
+            Font Size
+          </h3>
+          <label class="flex items-center justify-between gap-3">
+            <span class="text-base">72 – 640</span>
+            <input
+              id="font-size-input"
+              type="number"
+              min="72"
+              max="640"
+              value="320"
+              class="number-input"
+            />
+          </label>
+        </div>
+
+        <!-- Columns -->
+        <div class="panel-section">
+          <h3 class="section-heading">
+            Columns
+          </h3>
+          <label class="flex items-center justify-between gap-3">
+            <span class="text-base">2 – 6</span>
+            <input
+              id="cols-input"
+              type="number"
+              min="2"
+              max="6"
+              value="4"
+              class="number-input"
+            />
+          </label>
+        </div>
+
+        <!-- Colors -->
+        <div class="flex flex-col gap-3">
+          <h3 class="section-heading">
+            Colors
+          </h3>
+
+          <div class="panel-section">
+            <div class="flex gap-2">
+              <label
+                class="color-swatch"
+              >
+                <input
+                  type="color"
+                  id="bg-color-input"
+                  value="#2b2b2b"
+                  class="sr-only"
+                />
+                <span
+                  id="bg-color-swatch"
+                  class="block w-full h-full"
+                  style="background: #2b2b2b"
+                ></span>
+              </label>
+              <label
+                class="color-swatch"
+              >
+                <input
+                  type="color"
+                  id="font-color-input"
+                  value="#b4b4b4"
+                  class="sr-only"
+                />
+                <span
+                  id="font-color-swatch"
+                  class="block w-full h-full"
+                  style="background: #b4b4b4"
+                ></span>
+              </label>
+            </div>
+            <p class="hint">Background and Type</p>
+          </div>
+        </div>
+
+        <!-- Reset -->
+        <div class="mt-auto">
+          <button
+            id="reset-btn"
+            class="w-full text-sm font-bold tracking-wider uppercase py-3 px-4 border border-black/30 rounded-lg hover:bg-black hover:text-white transition-colors duration-200 cursor-pointer"
+          >
+            Reset
+          </button>
         </div>
       </div>
-    </div>
+    </aside>
 
-    <!-- Settings Trigger -->
-    <button id="settings-trigger" class="panel-toggle">
-      <img src="./src/assets/images/gear.svg" alt="Settings" />
+    <!-- Gear trigger -->
+    <button
+      id="settings-trigger"
+      class="fixed top-6 right-6 w-6 h-6 z-2000 bg-transparent border-none cursor-pointer flex items-center justify-center opacity-5 hover:opacity-100 [body.panel-open_&]:opacity-100 transition-opacity duration-300"
+    >
+      <img alt="Settings" class="w-full h-full object-contain" />
     </button>
 
     <script type="module" src="./src/scripts/index.js"></script>
