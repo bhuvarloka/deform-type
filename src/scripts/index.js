@@ -54,10 +54,6 @@ new p5((sk) => {
     letters.forEach((char) => textures.push(createTexture(char)));
   };
 
-  sk.preload = () => {
-    font = sk.loadFont(typefaceUrl);
-  };
-
   const createTexture = (char) => {
     const graphics = sk.createGraphics(sk.width / cols, sk.height / rows);
     graphics.fill(fontColor);
@@ -66,7 +62,7 @@ new p5((sk) => {
     } else {
       graphics.textFont(font);
     }
-    graphics.textAlign(graphics.CENTER, graphics.CENTER);
+    graphics.textAlign(sk.CENTER, sk.CENTER);
     graphics.textSize(fontSize);
     graphics.text(char, graphics.width / 2, graphics.height / 2);
     return graphics;
@@ -92,7 +88,8 @@ new p5((sk) => {
     }
   };
 
-  sk.setup = () => {
+  sk.setup = async () => {
+    font = await sk.loadFont(typefaceUrl);
     sk.createCanvas(sk.windowWidth, sk.windowHeight, sk.WEBGL);
     defaultDensity = sk.displayDensity();
 
@@ -190,17 +187,17 @@ new p5((sk) => {
       const pulseValue = pulse(sk, 12, 18, 2);
       for (let col = 1; col < cols; col++) {
         for (let row = 1; row < rows; row++) {
-          const vertex = gridVertices[col][row];
-          sk.ellipse(vertex.x, vertex.y, pulseValue, pulseValue);
+          const handle = gridVertices[col][row];
+          sk.ellipse(handle.x, handle.y, pulseValue, pulseValue);
         }
       }
 
-      const mouseX = sk.mouseX - sk.width / 2;
-      const mouseY = sk.mouseY - sk.height / 2;
+      const pointerX = sk.mouseX - sk.width / 2;
+      const pointerY = sk.mouseY - sk.height / 2;
       for (let col = 1; col < cols; col++) {
         for (let row = 1; row < rows; row++) {
-          const vertex = gridVertices[col][row];
-          if (sk.dist(mouseX, mouseY, vertex.x, vertex.y) < handleSize) {
+          const handle = gridVertices[col][row];
+          if (sk.dist(pointerX, pointerY, handle.x, handle.y) < handleSize) {
             hoveredHandle = { col, row };
             break;
           }
@@ -232,9 +229,9 @@ new p5((sk) => {
       }
     }
     if (hoveredHandle) {
-      const vertex = gridVertices[hoveredHandle.col][hoveredHandle.row];
-      const grabOffsetX = vertex.x - (sk.mouseX - sk.width / 2);
-      const grabOffsetY = vertex.y - (sk.mouseY - sk.height / 2);
+      const handle = gridVertices[hoveredHandle.col][hoveredHandle.row];
+      const grabOffsetX = handle.x - (sk.mouseX - sk.width / 2);
+      const grabOffsetY = handle.y - (sk.mouseY - sk.height / 2);
       draggedHandle = { col: hoveredHandle.col, row: hoveredHandle.row, grabOffsetX, grabOffsetY };
     }
   };
